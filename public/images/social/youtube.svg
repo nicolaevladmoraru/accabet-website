@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 64 64"
+     fill="none"
+     stroke="#ff7900"
+     stroke-width="3.2"
+     stroke-linecap="round"
+     stroke-linejoin="round"
+     role="img"
+     aria-label="YouTube">
+  <rect x="5" y="15" width="54" height="34" rx="9"/>
+  <path d="M27 23 L43 32 L27 41 Z"/>
+</svg>

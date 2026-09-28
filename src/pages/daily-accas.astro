@@ -1,0 +1,1167 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Daily Accas | AccaBet"
+  description="Explore AccaBet's generated accumulator tickets."
+  active="daily-accas"
+>
+  <main class="daily-page">
+    <section class="hero">
+      <div>
+        <span class="eyebrow">ACCABET DAILY ACCAS</span>
+        <h1>Daily <span>Accas</span></h1>
+        <p>Generated accumulator tickets with match updates.</p>
+      </div>
+
+      <div class="updates-card">
+        <strong><span class="green-dot"></span> Match updates</strong>
+        <p>
+          Live scores and results will appear here
+          once the website is connected to AccaBet.
+        </p>
+      </div>
+    </section>
+
+    <section class="filter-section" aria-label="Ticket filters">
+      <div class="main-filters">
+        <button class="main-filter active" data-panel="date" type="button">
+          <span class="filter-icon" aria-hidden="true">
+  <svg viewBox="0 0 24 24" fill="none"
+       stroke="currentColor" stroke-width="1.9"
+       stroke-linecap="round" stroke-linejoin="round">
+    <rect x="3" y="5" width="18" height="16" rx="2"/>
+    <path d="M7 3v4M17 3v4M3 10h18"/>
+    <path d="M7 14h2M12 14h2M17 14h.01M7 18h2M12 18h2"/>
+  </svg>
+</span>
+          <span class="filter-label">
+            <strong>Date</strong>
+            <small id="date-label">All dates</small>
+          </span>
+        </button>
+
+        <button class="main-filter" data-panel="status" type="button">
+          <span class="filter-icon" aria-hidden="true">
+  <svg viewBox="0 0 24 24" fill="none"
+       stroke="currentColor" stroke-width="1.9"
+       stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="9"/>
+    <circle cx="12" cy="12" r="4"/>
+  </svg>
+</span>
+          <span class="filter-label">
+            <strong>Ticket status</strong>
+            <small id="status-label">All</small>
+          </span>
+        </button>
+
+        <button class="main-filter" data-panel="matches" type="button">
+          <span class="filter-icon" aria-hidden="true">
+  <svg viewBox="0 0 24 24" fill="none"
+       stroke="currentColor" stroke-width="1.9"
+       stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="9" cy="8" r="3"/>
+    <path d="M3 20v-2a6 6 0 0 1 12 0v2H3Z"/>
+    <path d="M17 5a3 3 0 0 1 0 6"/>
+    <path d="M17 14a5 5 0 0 1 4 5v1h-4"/>
+  </svg>
+</span>
+          <span class="filter-label">
+            <strong>Number of matches</strong>
+            <small id="matches-label">All</small>
+          </span>
+        </button>
+
+        <button class="main-filter" data-panel="search" type="button">
+          <span class="filter-icon" aria-hidden="true">
+  <svg viewBox="0 0 24 24" fill="none"
+       stroke="currentColor" stroke-width="1.9"
+       stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="10.8" cy="10.8" r="6.8"/>
+    <path d="m16 16 5 5"/>
+  </svg>
+</span>
+          <span class="filter-label">
+            <strong>Search teams</strong>
+            <small id="search-label">Find a team</small>
+          </span>
+        </button>
+      </div>
+
+      <div class="submenu" id="date-panel">
+        <button class="sub-button selected" data-date="all" type="button">
+          All dates
+        </button>
+
+        <button class="sub-button" data-date="today" type="button">
+          Today
+        </button>
+
+        <button class="sub-button" data-date="yesterday" type="button">
+          Yesterday
+        </button>
+
+        <button class="sub-button" data-date="last7" type="button">
+          Last 7 days
+        </button>
+
+        <button class="sub-button" data-date="last30" type="button">
+          Last 30 days
+        </button>
+
+        <button class="sub-button choose-date-button" data-date="custom" type="button">
+          <span class="choose-date-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"
+       stroke="currentColor" stroke-width="1.9"
+       stroke-linecap="round" stroke-linejoin="round">
+    <rect x="3" y="5" width="18" height="16" rx="2"/>
+    <path d="M7 3v4M17 3v4M3 10h18"/>
+    <path d="M7 14h2M12 14h2M17 14h.01M7 18h2M12 18h2"/>
+  </svg>
+          </span>
+          <span>Choose date</span>
+        </button>
+
+        <div class="custom-date hidden" id="custom-date-panel">
+          <label for="history-date">Select a date</label>
+          <input
+            id="history-date"
+            type="date"
+            aria-label="Choose a historical date"
+          />
+        </div>
+      </div>
+
+      <div class="submenu hidden" id="status-panel">
+        <button class="sub-button selected" data-status="all">All</button>
+        <button class="sub-button" data-status="upcoming"><svg class="ab-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l4 2"/></svg> Upcoming</button>
+        <button class="sub-button" data-status="live"><svg class="ab-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"/><path d="M8 8a6 6 0 0 0 0 8m8-8a6 6 0 0 1 0 8M5 5a10 10 0 0 0 0 14m14-14a10 10 0 0 1 0 14"/></svg> Live</button>
+        <button class="sub-button" data-status="won"><svg class="ab-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m7 12 3 3 7-7"/></svg> Won</button>
+        <button class="sub-button" data-status="lost"><svg class="ab-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m9 9 6 6m0-6-6 6"/></svg> Lost</button>
+        <button class="sub-button" data-status="void">Void</button>
+      </div>
+
+      <div class="submenu hidden" id="matches-panel">
+        <button class="sub-button selected" data-matches="all">All</button>
+        <button class="sub-button" data-matches="2">2 matches</button>
+        <button class="sub-button" data-matches="3">3 matches</button>
+        <button class="sub-button" data-matches="4">4 matches</button>
+        <button class="sub-button" data-matches="5">5 matches</button>
+        <button class="sub-button" data-matches="6">6+ matches</button>
+      </div>
+
+      <div class="submenu hidden" id="search-panel">
+        <label class="search-box">
+          <span><svg class="ab-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m16 16 5 5"/></svg></span>
+          <input
+            id="team-search"
+            type="search"
+            placeholder="Search for a team..."
+            autocomplete="off"
+          />
+        </label>
+        <button id="clear-search" class="sub-button" type="button">
+          Clear
+        </button>
+      </div>
+    </section>
+
+    <section class="results-section">
+      <div class="results-heading">
+        <h2 id="results-count">0 tickets found</h2>
+
+        <div class="sort-options" aria-label="Sort tickets">
+          <button id="sort-button" type="button" aria-expanded="false">
+            ⇅ <span id="sort-label">Newest first</span> ⌄
+          </button>
+
+          <div id="sort-menu" class="sort-menu hidden">
+            <button data-sort="newest" type="button">Newest first</button>
+            <button data-sort="oldest" type="button">Oldest first</button>
+            <button data-sort="highest" type="button">Highest odds</button>
+            <button data-sort="lowest" type="button">Lowest odds</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="ticket-list" class="ticket-list">
+        <div class="empty-state">
+          <span class="empty-icon"><svg class="ab-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h18v3a2 2 0 0 0 0 4v3H3v-3a2 2 0 0 0 0-4V7Z"/><path d="M12 7v10" stroke-dasharray="2 2"/></svg></span>
+          <h3>No published tickets yet</h3>
+          <p>
+            Daily Accas will appear here once automatic
+            publishing is connected.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <p class="disclaimer">
+      18+ only. AccaBet generates accumulator tickets and does not
+      accept bets. No outcome is guaranteed.
+    </p>
+  </main>
+</BaseLayout>
+
+<script>
+  // ACCABET DAILY PUBLIC FEED V1
+  const iconLive = '<svg class="ab-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"/><path d="M8 8a6 6 0 0 0 0 8m8-8a6 6 0 0 1 0 8M5 5a10 10 0 0 0 0 14m14-14a10 10 0 0 1 0 14"/></svg>';
+  import {
+    fetchPublicTickets,
+    calculateTicketOdds,
+    currentUkDate
+  } from '../lib/publicTickets';
+
+  type Selection = {
+    home: string;
+    away: string;
+    league?: string;
+    pick: string;
+    odds?: number;
+    score?: string;
+    minute?: number;
+    status?: string;
+    result?: string;
+  };
+
+  type Ticket = {
+    id: string;
+    date: string;
+    publishedAt: string;
+    status: string;
+    totalOdds?: number;
+    selections: Selection[];
+  };
+
+  const tickets: Ticket[] = [];
+  let feedUnavailable = false;
+
+  async function loadPublishedTickets(): Promise<void> {
+    try {
+      const published = await fetchPublicTickets(500);
+      const today = currentUkDate();
+
+      const mapped: Ticket[] = published
+        .filter(ticket => ticket.date <= today)
+        .map(ticket => ({
+          id: `${ticket.date}-${ticket.slot_hour}`,
+          date: ticket.date,
+          publishedAt: ticket.published_at,
+          status: 'pending',
+          totalOdds:
+            calculateTicketOdds(ticket.selections) ?? undefined,
+          selections: ticket.selections.map(selection => ({
+            home: selection.home_team,
+            away: selection.away_team,
+            league: selection.league ?? undefined,
+            pick: selection.market,
+            odds: selection.odds ?? undefined
+          }))
+        }));
+
+      tickets.splice(0, tickets.length, ...mapped);
+      feedUnavailable = false;
+    } catch (error) {
+      console.warn('Public ticket feed unavailable:', error);
+      feedUnavailable = true;
+    }
+
+    render();
+  }
+
+  const filters = {
+    date: 'all',
+    customDate: '',
+    status: 'all',
+    matches: 'all',
+    search: '',
+    sort: 'newest'
+  };
+
+  const panels = ['date', 'status', 'matches', 'search'];
+
+  const $ = <T extends Element>(selector: string): T =>
+    document.querySelector<T>(selector)!;
+
+  function setPanel(panel: string): void {
+    panels.forEach(name => {
+      $(`#${name}-panel`).classList.toggle(
+        'hidden',
+        name !== panel
+      );
+    });
+
+    document.querySelectorAll('.main-filter').forEach(button => {
+      button.classList.toggle(
+        'active',
+        button.getAttribute('data-panel') === panel
+      );
+    });
+  }
+
+  document.querySelectorAll<HTMLButtonElement>('.main-filter')
+    .forEach(button => {
+      button.addEventListener('click', () => {
+        setPanel(button.dataset.panel!);
+      });
+    });
+
+  function choose(
+    attribute: string,
+    value: string,
+    labelId: string,
+    label: string
+  ): void {
+    const panel = $(`#${attribute}-panel`);
+
+    panel.querySelectorAll('.sub-button').forEach(button => {
+      button.classList.toggle(
+        'selected',
+        button.getAttribute(`data-${attribute}`) === value
+      );
+    });
+
+    $(`#${labelId}`).textContent = label;
+    (filters as unknown as Record<string, string>)[attribute] = value;
+
+    render();
+  }
+
+  document.querySelectorAll<HTMLButtonElement>('[data-date]')
+    .forEach(button => {
+      button.addEventListener('click', () => {
+        const value = button.dataset.date!;
+
+        choose(
+          'date',
+          value,
+          'date-label',
+          button.textContent!.trim()
+        );
+
+        $('#custom-date-panel').classList.toggle(
+          'hidden',
+          value !== 'custom'
+        );
+      });
+    });
+
+  const historyDate = $<HTMLInputElement>('#history-date');
+
+  historyDate.max = ukDate();
+
+  historyDate.addEventListener('change', () => {
+    const selected = historyDate.value;
+
+    if (!selected || selected > ukDate()) {
+      historyDate.value = '';
+      filters.customDate = '';
+      return;
+    }
+
+    filters.customDate = selected;
+    filters.date = 'custom';
+
+    $('#date-label').textContent = selected;
+
+    render();
+  });
+
+  document.querySelectorAll<HTMLButtonElement>('[data-status]')
+    .forEach(button => {
+      button.addEventListener('click', () => {
+        choose(
+          'status',
+          button.dataset.status!,
+          'status-label',
+          button.textContent!.trim()
+        );
+      });
+    });
+
+  document.querySelectorAll<HTMLButtonElement>('[data-matches]')
+    .forEach(button => {
+      button.addEventListener('click', () => {
+        choose(
+          'matches',
+          button.dataset.matches!,
+          'matches-label',
+          button.textContent!.trim()
+        );
+      });
+    });
+
+  const search = $<HTMLInputElement>('#team-search');
+
+  search.addEventListener('input', () => {
+    filters.search = search.value.trim().toLowerCase();
+
+    $('#search-label').textContent =
+      search.value.trim() || 'Find a team';
+
+    render();
+  });
+
+  $('#clear-search').addEventListener('click', () => {
+    search.value = '';
+    filters.search = '';
+    $('#search-label').textContent = 'Find a team';
+    render();
+  });
+
+  const sortButton = $<HTMLButtonElement>('#sort-button');
+  const sortMenu = $('#sort-menu');
+
+  sortButton.addEventListener('click', () => {
+    const isOpen = sortMenu.classList.toggle('hidden') === false;
+    sortButton.setAttribute('aria-expanded', String(isOpen));
+  });
+
+  document.querySelectorAll<HTMLButtonElement>('[data-sort]')
+    .forEach(button => {
+      button.addEventListener('click', () => {
+        filters.sort = button.dataset.sort!;
+        $('#sort-label').textContent = button.textContent!.trim();
+        sortMenu.classList.add('hidden');
+        sortButton.setAttribute('aria-expanded', 'false');
+        render();
+      });
+    });
+
+  function ukDate(offset = 0): string {
+    const date = new Date();
+    date.setUTCDate(date.getUTCDate() + offset);
+
+    const parts = new Intl.DateTimeFormat('en-GB', {
+      timeZone: 'Europe/London',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit'
+    }).formatToParts(date);
+
+    const get = (name: string) =>
+      parts.find(part => part.type === name)?.value ?? '';
+
+    return `${get('year')}-${get('month')}-${get('day')}`;
+  }
+
+  function escapeHtml(value: unknown): string {
+    return String(value ?? '').replace(/[&<>"']/g, char => {
+      const entities: Record<string, string> = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+      };
+
+      return entities[char] ?? char;
+    });
+  }
+
+  function dateMatches(date: string): boolean {
+    const today = ukDate();
+
+    // Never display future tickets.
+    if (date > today) return false;
+
+    if (filters.date === 'all') return true;
+
+    if (filters.date === 'today')
+      return date === today;
+
+    if (filters.date === 'yesterday')
+      return date === ukDate(-1);
+
+    if (filters.date === 'custom')
+      return Boolean(filters.customDate) &&
+        date === filters.customDate;
+
+    if (filters.date === 'last7' || filters.date === 'last30') {
+      const days = filters.date === 'last7' ? 7 : 30;
+
+      const start = new Date(`${today}T12:00:00Z`);
+      start.setUTCDate(start.getUTCDate() - (days - 1));
+
+      const startDate = start.toISOString().slice(0, 10);
+
+      return date >= startDate && date <= today;
+    }
+
+    return false;
+  }
+
+  function render(): void {
+    let visible = tickets.filter(ticket => {
+      if (!dateMatches(ticket.date)) return false;
+
+      if (
+        filters.status !== 'all' &&
+        ticket.status.toLowerCase() !== filters.status
+      ) return false;
+
+      if (filters.matches !== 'all') {
+        const count = ticket.selections.length;
+        const selected = Number(filters.matches);
+
+        if (selected === 6 ? count < 6 : count !== selected)
+          return false;
+      }
+
+      if (
+        filters.search &&
+        !ticket.selections.some(selection =>
+          `${selection.home} ${selection.away}`
+            .toLowerCase()
+            .includes(filters.search)
+        )
+      ) return false;
+
+      return true;
+    });
+
+    visible = [...visible].sort((a, b) => {
+      if (filters.sort === 'oldest')
+        return a.publishedAt.localeCompare(b.publishedAt);
+
+      if (filters.sort === 'highest')
+        return (b.totalOdds ?? 0) - (a.totalOdds ?? 0);
+
+      if (filters.sort === 'lowest')
+        return (a.totalOdds ?? 0) - (b.totalOdds ?? 0);
+
+      return b.publishedAt.localeCompare(a.publishedAt);
+    });
+
+    $('#results-count').textContent =
+      `${visible.length} ticket${visible.length === 1 ? '' : 's'} found`;
+
+    const list = $('#ticket-list');
+
+    if (!visible.length) {
+      list.innerHTML = `
+        <div class="empty-state">
+          <span class="empty-icon"><svg class="ab-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h18v3a2 2 0 0 0 0 4v3H3v-3a2 2 0 0 0 0-4V7Z"/><path d="M12 7v10" stroke-dasharray="2 2"/></svg></span>
+          <h3>No published tickets found</h3>
+          <p>
+            ${tickets.length
+              ? 'Try another filter or search.'
+              : feedUnavailable
+                ? 'The ticket feed is temporarily unavailable. Please try again later.'
+                : 'No published tickets are available yet.'}
+          </p>
+        </div>
+      `;
+      return;
+    }
+
+    list.innerHTML = visible.map(ticket => {
+      const status = ticket.status.toLowerCase();
+
+      const rows = ticket.selections.map(selection => {
+        const live = selection.status?.toLowerCase() === 'live';
+
+        const statusText = live
+          ? `LIVE ${selection.minute ?? ''}′`
+          : selection.status?.toUpperCase() ?? '';
+
+        return `
+          <div class="match-row">
+            <div class="teams">
+              <strong>
+                ${escapeHtml(selection.home)}
+                <span>vs</span>
+                ${escapeHtml(selection.away)}
+              </strong>
+              <small>${escapeHtml(selection.league ?? '')}</small>
+            </div>
+
+            <span class="pick">
+              ${escapeHtml(selection.pick)}
+            </span>
+
+            <div class="match-result">
+              <strong>${escapeHtml(selection.score ?? '—')}</strong>
+              <small>${live ? iconLive : ''}${escapeHtml(statusText)}</small>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      return `
+        <article class="ticket-card ${escapeHtml(status)}">
+          <div class="ticket-header">
+            <div class="ticket-meta">
+              <span><svg class="ab-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h18v3a2 2 0 0 0 0 4v3H3v-3a2 2 0 0 0 0-4V7Z"/><path d="M12 7v10" stroke-dasharray="2 2"/></svg> ${ticket.selections.length} Selections</span>
+              <span><svg class="ab-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V11h4v9M10 20V5h4v15M16 20v-7h4v7"/></svg> ${ticket.totalOdds?.toFixed(2) ?? '—'}</span>
+              <span><svg class="ab-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 10h18"/></svg> ${escapeHtml(ticket.date)}</span>
+            </div>
+
+            <span class="status-badge ${escapeHtml(status)}">
+              ${status === 'live' ? '<svg class="ab-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"/><path d="M8 8a6 6 0 0 0 0 8m8-8a6 6 0 0 1 0 8M5 5a10 10 0 0 0 0 14m14-14a10 10 0 0 1 0 14"/></svg> LIVE' :
+                status === 'won' ? '<svg class="ab-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m7 12 3 3 7-7"/></svg> WON' :
+                status === 'lost' ? '<svg class="ab-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m9 9 6 6m0-6-6 6"/></svg> LOST' :
+                status === 'upcoming' ? '<svg class="ab-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l4 2"/></svg> UPCOMING' :
+                status === 'pending' ? 'RESULTS PENDING' :
+                escapeHtml(status.toUpperCase())}
+            </span>
+          </div>
+
+          ${rows}
+        </article>
+      `;
+    }).join('');
+  }
+
+  render();
+  void loadPublishedTickets();
+</script>
+
+<style>
+  .daily-page {
+    max-width: 1220px;
+    margin: 0 auto;
+    padding: 58px 24px 100px;
+  }
+
+  .hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 35px;
+    margin-bottom: 48px;
+  }
+
+  .eyebrow {
+    display: block;
+    color: #ff7900;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    margin-bottom: 15px;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: clamp(43px, 6vw, 72px);
+    line-height: 1.05;
+  }
+
+  h1 span {
+    color: #ff7900;
+  }
+
+  .hero p {
+    color: #bcbcbc;
+    font-size: 18px;
+    line-height: 1.6;
+    margin-top: 15px;
+  }
+
+  .updates-card {
+    flex: 0 0 320px;
+    padding: 22px;
+    background: #151515;
+    border: 1px solid #383838;
+    border-left: 3px solid #ff7900;
+    border-radius: 11px;
+  }
+
+  .updates-card strong {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .updates-card p {
+    color: #aaa;
+    font-size: 13px;
+    margin: 12px 0 0;
+  }
+
+  .green-dot {
+    width: 10px;
+    height: 10px;
+    background: #23df53;
+    border-radius: 50%;
+  }
+
+  .main-filters {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .main-filter {
+    display: flex;
+    align-items: center;
+    text-align: left;
+    gap: 15px;
+    min-height: 79px;
+    padding: 17px;
+    color: white;
+    background: #151515;
+    border: 1px solid #373737;
+    border-radius: 11px;
+    cursor: pointer;
+    font: inherit;
+    transition: border-color .2s, background .2s;
+  }
+
+  .main-filter.active,
+  .main-filter:hover {
+    border-color: #ff7900;
+    background: #1b1713;
+  }
+
+  .filter-icon {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    color: #ff7900;
+  }
+
+  .filter-icon svg {
+    display: block;
+    width: 29px;
+    height: 29px;
+    stroke: currentColor;
+  }
+
+  .filter-label {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+  }
+
+  .filter-label strong {
+    font-size: 15px;
+  }
+
+  .filter-label small {
+    color: #aaa;
+    font-size: 12px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .submenu {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 13px;
+    background: #141414;
+    border: 1px solid #373737;
+    border-radius: 11px;
+    margin-top: 14px;
+    padding: 16px;
+  }
+
+  .hidden {
+    display: none !important;
+  }
+
+  .sub-button {
+    border: 1px solid #393939;
+    background: #222;
+    color: white;
+    border-radius: 9px;
+    padding: 13px 22px;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .sub-button:hover {
+    border-color: #ff7900;
+  }
+
+  .sub-button.selected {
+    background: #ff7900;
+    border-color: #ff7900;
+    color: #080808;
+  }
+
+  .search-box {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+    background: #090909;
+    border: 1px solid #393939;
+    border-radius: 9px;
+    padding: 0 14px;
+  }
+
+  .search-box input {
+    background: transparent;
+    border: 0;
+    outline: 0;
+    color: white;
+    font: inherit;
+    padding: 14px 0;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .results-section {
+    margin-top: 45px;
+  }
+
+  .results-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 24px;
+  }
+
+  .results-heading h2 {
+    font-size: 24px;
+    margin: 0;
+  }
+
+  .sort-options {
+    position: relative;
+  }
+
+  #sort-button {
+    border: 1px solid #393939;
+    background: #121212;
+    color: white;
+    padding: 14px 17px;
+    border-radius: 9px;
+    cursor: pointer;
+    font: inherit;
+    font-size: 13px;
+  }
+
+  .sort-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    min-width: 185px;
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    background: #1a1a1a;
+    border: 1px solid #393939;
+    border-radius: 9px;
+    overflow: hidden;
+  }
+
+  .sort-menu button {
+    border: 0;
+    background: transparent;
+    color: white;
+    text-align: left;
+    padding: 13px 15px;
+    cursor: pointer;
+  }
+
+  .sort-menu button:hover {
+    background: #343434;
+  }
+
+  .ticket-list {
+    display: grid;
+    gap: 14px;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 70px 25px;
+    border: 1px dashed #373737;
+    border-radius: 12px;
+    background: #121212;
+  }
+
+  .empty-icon {
+    display: block;
+    font-size: 42px;
+    margin-bottom: 14px;
+  }
+
+  .empty-state h3 {
+    font-size: 23px;
+    margin: 0 0 12px;
+  }
+
+  .empty-state p {
+    color: #999;
+    font-size: 14px;
+    line-height: 1.7;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  .ticket-card {
+    background: #151515;
+    border: 1px solid #383838;
+    border-left: 4px solid #ff7900;
+    border-radius: 12px;
+    padding: 18px 25px;
+  }
+
+  .ticket-card.live,
+  .ticket-card.won {
+    border-left-color: #25d94f;
+  }
+
+  .ticket-card.lost {
+    border-left-color: #f33333;
+  }
+
+  .ticket-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding-bottom: 13px;
+    border-bottom: 1px solid #303030;
+  }
+
+  .ticket-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    color: #ccc;
+    font-size: 13px;
+  }
+
+  .status-badge {
+    flex-shrink: 0;
+    border: 1px solid #ff7900;
+    background: #24180d;
+    color: #ff7900;
+    padding: 7px 13px;
+    border-radius: 9px;
+    font-size: 12px;
+    font-weight: 800;
+  }
+
+  .status-badge.live,
+  .status-badge.won {
+    color: #30ec60;
+    background: #112517;
+    border-color: #245e34;
+  }
+
+  .status-badge.lost {
+    color: #ff4b4b;
+    background: #2b1010;
+    border-color: #752727;
+  }
+
+  .match-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 130px;
+    gap: 15px;
+    align-items: center;
+    border-bottom: 1px solid #292929;
+    padding: 14px 0;
+    font-size: 13px;
+  }
+
+  .match-row:last-child {
+    border-bottom: 0;
+  }
+
+  .teams strong,
+  .teams small,
+  .match-result strong,
+  .match-result small {
+    display: block;
+  }
+
+  .teams strong {
+    font-size: 14px;
+  }
+
+  .teams strong span {
+    color: #777;
+    font-weight: 400;
+    margin: 0 8px;
+  }
+
+  .teams small {
+    color: #888;
+    margin-top: 6px;
+  }
+
+  .pick {
+    color: #ddd;
+  }
+
+  .match-result {
+    text-align: right;
+  }
+
+  .match-result strong {
+    color: #ff7900;
+    font-size: 16px;
+  }
+
+  .match-result small {
+    color: #29e85c;
+    margin-top: 5px;
+    font-weight: 700;
+  }
+
+  .disclaimer {
+    color: #888;
+    font-size: 12px;
+    line-height: 1.8;
+    margin-top: 45px;
+  }
+
+  @media (max-width: 980px) {
+    .main-filters {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 650px) {
+    .daily-page {
+      padding: 38px 18px 75px;
+    }
+
+    .hero {
+      flex-direction: column;
+      align-items: stretch;
+      margin-bottom: 32px;
+    }
+
+    .hero p {
+      font-size: 15px;
+    }
+
+    .updates-card {
+      flex-basis: auto;
+    }
+
+    .main-filters {
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    .main-filter {
+      min-height: 70px;
+    }
+
+    .submenu {
+      gap: 8px;
+      padding: 11px;
+    }
+
+    .sub-button {
+      flex: 1 1 calc(50% - 8px);
+      padding: 12px 10px;
+    }
+
+    .results-heading {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    .ticket-card {
+      padding: 15px;
+    }
+
+    .ticket-header {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    .ticket-meta {
+      gap: 10px;
+    }
+
+    .match-row {
+      grid-template-columns: 1fr auto;
+      gap: 8px;
+    }
+
+    .pick {
+      grid-column: 1;
+      grid-row: 2;
+      color: #ff7900;
+    }
+
+    .match-result {
+      grid-column: 2;
+      grid-row: 1 / 3;
+    }
+  }
+
+  .custom-date {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    width: 100%;
+    padding-top: 12px;
+    border-top: 1px solid #303030;
+  }
+
+  .custom-date label {
+    color: #ccc;
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .custom-date input {
+    width: min(100%, 300px);
+    box-sizing: border-box;
+    background: #090909;
+    color: white;
+    border: 1px solid #ff7900;
+    border-radius: 9px;
+    padding: 13px;
+    font: inherit;
+    color-scheme: dark;
+  }
+
+  .custom-date input:focus {
+    outline: 2px solid #ff7900;
+    outline-offset: 2px;
+  }
+
+
+  /* Orange calendar icon inside Choose date */
+  .choose-date-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+  }
+
+  .choose-date-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    color: #ff7900;
+  }
+
+  .choose-date-icon svg {
+    display: block;
+    width: 18px;
+    height: 18px;
+    stroke: currentColor;
+  }
+
+  .choose-date-button.selected .choose-date-icon {
+    color: #ff7900;
+  }
+
+</style>

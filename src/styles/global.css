@@ -1,0 +1,1103 @@
+:root {
+  --bg: #080808;
+  --card: #121212;
+  --line: #292929;
+  --orange: #ff7900;
+  --text: #ffffff;
+  --muted: #b9b9b9;
+}
+
+* { box-sizing: border-box; }
+html {
+  background: var(--bg);
+  color: var(--text);
+  font-family: Arial, Helvetica, sans-serif;
+}
+body { margin: 0; min-height: 100vh; }
+a { color: inherit; }
+
+.site-header {
+  position: relative;
+  z-index: 10;
+  background: #080808;
+  border-bottom: 1px solid var(--line);
+}
+.header-inner {
+  max-width: 1300px;
+  min-height: 86px;
+  margin: auto;
+  padding: 12px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+}
+.site-logo {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+  width: 185px;
+}
+.site-logo img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.desktop-nav {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: clamp(14px, 2vw, 28px);
+  flex-wrap: wrap;
+}
+.nav-link {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 700;
+  transition: color .2s ease;
+}
+.nav-link:hover,
+.nav-link.active {
+  color: var(--orange);
+}
+.mobile-menu { display: none; }
+
+.hero {
+  max-width: 1050px;
+  margin: 0 auto;
+  padding: 110px 24px 140px;
+}
+.eyebrow {
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  margin-bottom: 18px;
+  color: var(--orange);
+}
+h1 {
+  font-size: clamp(42px,7vw,78px);
+  line-height: .98;
+  letter-spacing: -3px;
+  margin: 0 0 28px;
+  max-width: 850px;
+}
+h1 span { color: var(--orange); }
+.hero > p {
+  font-size: 19px;
+  line-height: 1.6;
+  color: var(--muted);
+  max-width: 700px;
+}
+.notice {
+  margin-top: 42px;
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--orange);
+  background: var(--card);
+  padding: 18px 20px;
+  color: #d2d2d2;
+  line-height: 1.55;
+  max-width: 760px;
+}
+.legal {
+  max-width: 900px;
+  margin: auto;
+  padding: 70px 24px 100px;
+}
+.legal h1 {
+  font-size: 42px;
+  letter-spacing: -1.5px;
+  margin-bottom: 8px;
+}
+.date { color: var(--muted); margin-bottom: 34px; }
+.intro {
+  background: rgba(255,121,0,.07);
+  border: 1px solid rgba(255,121,0,.3);
+  padding: 20px;
+  border-radius: 10px;
+  line-height: 1.65;
+  margin-bottom: 32px;
+}
+section { padding: 0 0 24px; }
+section h2 { font-size: 18px; margin: 0 0 9px; }
+section h2 b {
+  display: inline-flex;
+  width: 28px;
+  height: 28px;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,121,0,.12);
+  color: var(--orange);
+  border-radius: 6px;
+  margin-right: 10px;
+  font-size: 13px;
+}
+section p { color: #d2d2d2; line-height: 1.7; margin: 0; }
+
+.site-footer {
+  border-top: 1px solid var(--line);
+  color: #999;
+  font-size: 13px;
+}
+.footer-inner {
+  max-width: 1300px;
+  margin: auto;
+  padding: 30px 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.site-footer nav {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.site-footer a { color: #bbb; text-decoration: none; }
+.site-footer a:hover { color: var(--orange); }
+
+.page-shell {
+  max-width: 1100px;
+  min-height: 65vh;
+  margin: auto;
+  padding: 90px 24px;
+}
+.page-shell h1 { font-size: clamp(38px,5vw,60px); }
+.page-shell p {
+  color: var(--muted);
+  font-size: 18px;
+  line-height: 1.7;
+  max-width: 750px;
+}
+
+@media (max-width: 980px) {
+  .desktop-nav { display: none; }
+  .mobile-menu { display: block; position: relative; }
+  .mobile-menu summary {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    padding: 12px;
+    list-style: none;
+  }
+  .mobile-menu summary::-webkit-details-marker { display: none; }
+  .mobile-menu summary span {
+    width: 25px;
+    height: 2px;
+    background: #fff;
+    border-radius: 2px;
+  }
+  .mobile-menu[open] summary span { background: var(--orange); }
+  .mobile-menu nav {
+    position: absolute;
+    top: 50px;
+    right: 0;
+    width: min(280px,85vw);
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding: 10px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: #151515;
+    box-shadow: 0 15px 35px rgba(0,0,0,.5);
+  }
+  .mobile-menu nav a {
+    display: block;
+    padding: 14px;
+    border-radius: 6px;
+  }
+  .mobile-menu nav a:hover { background: #222; }
+}
+@media (max-width: 600px) {
+  .header-inner { min-height: 70px; padding: 10px 18px; }
+  .site-logo { width: 145px; }
+  .hero { padding: 75px 24px 100px; }
+  h1 { letter-spacing: -2px; }
+  .legal { padding-top: 45px; }
+  .legal h1 { font-size: 34px; }
+  .footer-inner { flex-direction: column; align-items: flex-start; }
+}
+
+/* ACCABET SOCIAL PLATFORMS */
+
+.social-section {
+  max-width: 1100px;
+  margin: 20px auto 100px;
+  padding: 0 24px;
+}
+
+.social-heading {
+  margin-bottom: 32px;
+}
+
+.social-heading h2 {
+  font-size: clamp(32px, 4vw, 48px);
+  margin: 0 0 14px;
+  color: #ffffff;
+}
+
+.social-heading p {
+  color: #b9b9b9;
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+.social-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.social-card {
+  display: flex;
+  flex-direction: column;
+  min-height: 245px;
+  padding: 26px 20px;
+  background: #151515;
+  border: 1px solid #333333;
+  border-radius: 14px;
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.social-icon {
+  font-size: 32px;
+  font-weight: 800;
+  color: #ff7900;
+  margin-bottom: 24px;
+}
+
+.social-card h3 {
+  font-size: 21px;
+  margin: 0 0 10px;
+}
+
+.social-card p {
+  color: #b9b9b9;
+  line-height: 1.5;
+  margin: 0 0 22px;
+}
+
+.social-status,
+.social-action {
+  display: inline-flex;
+  align-self: flex-start;
+  margin-top: auto;
+  padding: 9px 12px;
+  border-radius: 7px;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.social-status {
+  color: #b9b9b9;
+  background: #292929;
+}
+
+.social-action {
+  color: #080808;
+  background: #ff7900;
+}
+
+.social-link {
+  border-color: #9b500f;
+  transition: border-color .2s, transform .2s;
+}
+
+.social-link:hover {
+  border-color: #ff7900;
+  transform: translateY(-4px);
+}
+
+.social-link:focus-visible {
+  outline: 3px solid #ff7900;
+  outline-offset: 4px;
+}
+
+.footer-social {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+  padding-top: 20px;
+  border-top: 1px solid #292929;
+}
+
+.footer-social span {
+  color: #777777;
+}
+
+@media (max-width: 900px) {
+  .social-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 520px) {
+  .social-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .social-card {
+    min-height: 205px;
+  }
+
+  .social-section {
+    margin-bottom: 65px;
+  }
+}
+
+/* ACCABET BRAND LOGOS */
+
+.social-icon {
+  display: flex;
+  align-items: center;
+  height: 48px;
+  margin-bottom: 24px;
+}
+
+.social-logo {
+  display: block;
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+}
+
+.footer-social a,
+.footer-social span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.footer-social-logo {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+@media (max-width: 520px) {
+  .social-logo {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+/* ACCABET HOME HERO V2 */
+
+.acca-build-banner {
+  width: 100%;
+  max-width: 1050px;
+  box-sizing: border-box;
+  margin: 0 auto 55px;
+  padding: 34px 28px;
+  border: 2px solid #ffffff;
+  border-radius: 24px;
+  background: #090909;
+  text-align: center;
+}
+
+.acca-build-banner h1 {
+  margin: 0 0 19px;
+  color: #ffffff;
+  font-size: clamp(29px, 4.5vw, 52px);
+  line-height: 1.15;
+  font-weight: 900;
+  letter-spacing: .3px;
+}
+
+.acca-build-banner p {
+  margin: 0;
+  color: #ffffff;
+  font-size: clamp(17px, 2.3vw, 29px);
+  line-height: 1.5;
+  font-weight: 650;
+}
+
+.acca-build-banner strong {
+  color: #ff7900;
+  font-weight: 900;
+}
+
+.home-main-headline {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  margin: 0 auto 28px;
+  max-width: 1050px;
+  text-align: center;
+  font-size: clamp(38px, 6.5vw, 79px);
+  font-weight: 900;
+  line-height: 1.08;
+  letter-spacing: -1.5px;
+}
+
+.headline-white {
+  color: #ffffff;
+}
+
+.headline-orange {
+  color: #ff7900;
+}
+
+@media (max-width: 650px) {
+  .acca-build-banner {
+    padding: 25px 16px;
+    border-radius: 18px;
+    margin-bottom: 42px;
+  }
+
+  .acca-build-banner h1 {
+    font-size: clamp(26px, 7vw, 36px);
+    margin-bottom: 14px;
+  }
+
+  .acca-build-banner p {
+    font-size: clamp(16px, 4.4vw, 21px);
+  }
+
+  .home-main-headline {
+    font-size: clamp(35px, 9vw, 53px);
+    line-height: 1.12;
+    letter-spacing: -1px;
+  }
+}
+
+/* ACCABET HOME HEADLINE V3 */
+
+.home-build-headline {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 25px;
+  max-width: 1050px;
+  margin: 0 auto 35px;
+  text-align: center;
+  font-size: clamp(38px, 6.5vw, 79px);
+  font-weight: 900;
+  line-height: 1.08;
+  letter-spacing: -1.5px;
+}
+
+.home-build-headline > .headline-white {
+  display: block;
+}
+
+.home-build-tagline {
+  display: block;
+  font-size: clamp(25px, 3.7vw, 46px);
+  line-height: 1.3;
+  font-weight: 900;
+  letter-spacing: -0.7px;
+}
+
+.home-tagline-line {
+  display: block;
+}
+
+@media (max-width: 650px) {
+  .home-build-headline {
+    gap: 20px;
+    font-size: clamp(34px, 9vw, 53px);
+    letter-spacing: -1px;
+  }
+
+  .home-build-tagline {
+    font-size: clamp(23px, 5.7vw, 34px);
+    line-height: 1.35;
+  }
+}
+
+/* ACCABET HOME ONE LINE V4 */
+
+.home-build-one-line {
+  max-width: none;
+  width: 100%;
+  gap: 28px;
+}
+
+.home-build-one-line > .headline-white,
+.home-build-one-line > .home-build-tagline {
+  font-family: inherit;
+  font-size: clamp(26px, 4.6vw, 66px);
+  font-weight: 900;
+  line-height: 1.12;
+  letter-spacing: -1.5px;
+  white-space: nowrap;
+}
+
+.home-build-one-line > .home-build-tagline {
+  display: block;
+}
+
+@media (max-width: 1100px) {
+  .home-build-one-line > .headline-white,
+  .home-build-one-line > .home-build-tagline {
+    font-size: clamp(17px, 4.5vw, 49px);
+    letter-spacing: -1px;
+  }
+}
+
+@media (max-width: 650px) {
+  .home-build-one-line {
+    gap: 20px;
+  }
+
+  .home-build-one-line > .headline-white,
+  .home-build-one-line > .home-build-tagline {
+    font-size: clamp(12px, 3.7vw, 25px);
+    letter-spacing: -0.5px;
+  }
+}
+
+/* ACCABET EQUAL WIDTH HEADLINES V5 FIXED */
+
+.home-build-equal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  width: 100%;
+  max-width: 1050px;
+  margin: 0 auto 35px;
+  text-align: center;
+  font-weight: 900;
+  line-height: 1.12;
+}
+
+.home-build-equal #acca-title {
+  display: block;
+  width: max-content;
+  white-space: nowrap;
+  font-size: clamp(38px, 6.5vw, 79px);
+  font-weight: 900;
+  letter-spacing: -1.5px;
+}
+
+.home-build-equal #acca-tagline {
+  display: block;
+  width: max-content;
+  white-space: nowrap;
+  font-size: clamp(20px, 3.7vw, 46px);
+  font-weight: 900;
+  line-height: 1.12;
+  letter-spacing: -0.7px;
+}
+
+@media (max-width: 650px) {
+  .home-build-equal {
+    gap: 15px;
+  }
+
+  .home-build-equal #acca-title {
+    font-size: clamp(30px, 9vw, 53px);
+    letter-spacing: -1px;
+  }
+
+  .home-build-equal #acca-tagline {
+    font-size: clamp(14px, 5vw, 30px);
+    letter-spacing: -0.3px;
+  }
+}
+
+/* ACCABET DISCOVER SECTION V1 */
+
+.discover-section {
+  width: 100%;
+  max-width: 1050px;
+  margin: 40px auto 55px;
+  padding: 42px 28px;
+  background: #111111;
+  border: 1px solid #303030;
+  border-radius: 18px;
+  text-align: center;
+}
+
+.discover-intro {
+  max-width: 720px;
+  margin: 0 auto 30px;
+}
+
+.discover-intro .eyebrow {
+  margin-bottom: 14px;
+}
+
+.discover-intro h2 {
+  margin: 0 0 14px;
+  color: #ffffff;
+  font-size: clamp(29px, 4vw, 44px);
+  line-height: 1.15;
+  font-weight: 900;
+}
+
+.discover-intro h2 span {
+  color: #ff7900;
+}
+
+.discover-intro p {
+  margin: 0;
+  color: #c5c5c5;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.discover-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 30px;
+}
+
+.discover-card {
+  min-width: 0;
+  padding: 27px 18px;
+  background: #1b1b1b;
+  border: 1px solid #363636;
+  border-radius: 14px;
+}
+
+.discover-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 55px;
+  height: 55px;
+  margin: 0 auto 18px;
+  color: #ff7900;
+  background: #292017;
+  border-radius: 14px;
+}
+
+.discover-icon svg {
+  width: 29px;
+  height: 29px;
+}
+
+.discover-card h3 {
+  margin: 0 0 10px;
+  color: #ffffff;
+  font-size: 21px;
+  font-weight: 800;
+}
+
+.discover-card p {
+  margin: 0;
+  color: #c5c5c5;
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.discover-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 14px 22px;
+  color: #101010;
+  background: #ff7900;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 800;
+  text-decoration: none;
+  transition: background .2s ease;
+}
+
+.discover-button:hover {
+  background: #ff962f;
+}
+
+.discover-button:focus-visible {
+  outline: 3px solid #ffffff;
+  outline-offset: 4px;
+}
+
+@media (max-width: 650px) {
+  .discover-section {
+    margin: 30px auto 45px;
+    padding: 28px 16px;
+  }
+
+  .discover-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .discover-card {
+    padding: 22px 16px;
+  }
+
+  .discover-intro p {
+    font-size: 14px;
+  }
+
+  .discover-button {
+    width: 100%;
+  }
+}
+
+/* ACCABET MOBILE WIDTH FIX V2 */
+
+.home-build-equal {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.home-build-equal #acca-title,
+.home-build-equal #acca-tagline {
+  flex: 0 0 auto;
+  max-width: none;
+  transform: none;
+}
+
+.discover-section {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.discover-intro,
+.discover-grid,
+.discover-card {
+  min-width: 0;
+}
+
+@media (max-width: 650px) {
+  .hero {
+    width: 100%;
+    max-width: 100%;
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .home-build-equal {
+    width: 100%;
+    max-width: 100%;
+    align-items: center;
+  }
+
+  .home-build-equal #acca-title,
+  .home-build-equal #acca-tagline {
+    display: block;
+    width: max-content;
+    max-width: none;
+    white-space: nowrap;
+  }
+
+  .discover-section {
+    width: 100%;
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .discover-grid {
+    width: 100%;
+  }
+
+  .discover-card {
+    width: 100%;
+  }
+}
+
+/* ACCABET MOBILE FIX V3 */
+
+/* Keep the Home layout inside the viewport. */
+
+.hero {
+  width: 100%;
+  min-width: 0;
+}
+
+.home-build-equal {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.home-build-equal #acca-title,
+.home-build-equal #acca-tagline {
+  display: block;
+  flex: none;
+  width: max-content;
+  max-width: none;
+  min-width: 0;
+  white-space: nowrap;
+}
+
+.discover-section {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.discover-intro,
+.discover-grid,
+.discover-card {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.discover-intro h2,
+.discover-intro p,
+.discover-card p {
+  overflow-wrap: break-word;
+}
+
+@media (max-width: 650px) {
+  .hero {
+    width: 100%;
+    min-width: 0;
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .home-build-equal {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    gap: 15px;
+    align-items: center;
+  }
+
+  .discover-section {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    padding: 28px 14px;
+  }
+
+  .discover-intro {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .discover-intro h2 {
+    font-size: clamp(25px, 7vw, 34px);
+    line-height: 1.2;
+  }
+
+  .discover-intro p {
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .discover-grid {
+    width: 100%;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .discover-card {
+    width: 100%;
+  }
+}
+
+/* ACCABET TODAY ACCAS V1 */
+
+.today-accas-section {
+  width: 100%;
+  max-width: 1050px;
+  min-width: 0;
+  margin: 45px auto 55px;
+  padding: 42px 28px;
+  background: #111111;
+  border: 1px solid #303030;
+  border-radius: 18px;
+  text-align: center;
+}
+
+.today-accas-heading {
+  max-width: 720px;
+  margin: 0 auto 28px;
+}
+
+.today-accas-heading h2 {
+  margin: 12px 0;
+  color: #ffffff;
+  font-size: clamp(30px, 4vw, 44px);
+  line-height: 1.15;
+  font-weight: 900;
+}
+
+.today-accas-heading h2 span {
+  color: #ff7900;
+}
+
+.today-accas-heading p {
+  margin: 0;
+  color: #c5c5c5;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.today-accas-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 13px;
+  max-width: 680px;
+  margin: 0 auto 28px;
+  padding: 42px 24px;
+  background: #1b1b1b;
+  border: 1px solid #383838;
+  border-radius: 14px;
+}
+
+.today-accas-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 62px;
+  height: 62px;
+  color: #ff7900;
+  background: #292017;
+  border-radius: 15px;
+}
+
+.today-accas-icon svg {
+  width: 32px;
+  height: 32px;
+}
+
+.today-accas-empty h3 {
+  margin: 5px 0 0;
+  color: #ffffff;
+  font-size: 23px;
+  font-weight: 800;
+}
+
+.today-accas-empty p {
+  max-width: 420px;
+  margin: 0;
+  color: #c5c5c5;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.today-accas-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 14px 23px;
+  color: #101010;
+  background: #ff7900;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 800;
+  text-decoration: none;
+  transition: background .2s ease;
+}
+
+.today-accas-button:hover {
+  background: #ff962f;
+}
+
+.today-accas-button:focus-visible {
+  outline: 3px solid #ffffff;
+  outline-offset: 4px;
+}
+
+@media (max-width: 650px) {
+  .today-accas-section {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    margin: 30px auto 45px;
+    padding: 28px 14px;
+  }
+
+  .today-accas-heading p {
+    font-size: 14px;
+  }
+
+  .today-accas-empty {
+    padding: 34px 16px;
+  }
+
+  .today-accas-empty h3 {
+    font-size: 21px;
+  }
+
+  .today-accas-empty p {
+    font-size: 14px;
+  }
+
+  .today-accas-button {
+    width: 100%;
+  }
+}
+/* ACCABET HOME PUBLIC FEED V1 */
+.today-accas-feed-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:18px; margin:25px 0; }
+.today-accas-feed-card { min-width:0; padding:20px; background:#151515; border:1px solid #383838; border-top:3px solid #ff7900; border-radius:14px; }
+.today-accas-feed-meta { display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; color:#ff7900; margin-bottom:15px; }
+.today-accas-feed-match { padding:12px 0; border-top:1px solid #383838; overflow-wrap:anywhere; }
+.today-accas-feed-match strong,.today-accas-feed-match span { display:block; }
+.today-accas-feed-match strong { color:#fff; }
+.today-accas-feed-match span { color:#ff7900; margin-top:5px; }
+.today-accas-feed-note { color:#aaa; font-size:13px; margin-top:15px; }
+@media (max-width:900px) { .today-accas-feed-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media (max-width:600px) { .today-accas-feed-grid { grid-template-columns:minmax(0,1fr); } }
+/* ACCABET DAILY DYNAMIC CARDS 27H6
+   Global selectors are required because cards are inserted by client-side JS.
+   Astro scoped <style> selectors do not match these dynamic elements. */
+#ticket-list { display: grid; gap: 16px; }
+#ticket-list .empty-state { text-align: center; padding: 70px 25px; border: 1px dashed #373737; border-radius: 12px; background: #121212; }
+#ticket-list .empty-icon { display: block; font-size: 42px; margin-bottom: 14px; }
+#ticket-list .empty-state h3 { font-size: 23px; margin: 0 0 12px; }
+#ticket-list .empty-state p { color: #999; font-size: 14px; line-height: 1.7; max-width: 480px; margin: 0 auto; }
+#ticket-list .ticket-card { display: block; min-width: 0; background: #151515; border: 1px solid #383838; border-left: 4px solid #ff7900; border-radius: 12px; padding: 20px 25px; }
+#ticket-list .ticket-card.live, #ticket-list .ticket-card.won { border-left-color: #25d94f; }
+#ticket-list .ticket-card.lost { border-left-color: #f33333; }
+#ticket-list .ticket-header { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding-bottom: 14px; border-bottom: 1px solid #303030; }
+#ticket-list .ticket-meta { display: flex; flex-wrap: wrap; gap: 20px; color: #ccc; font-size: 13px; }
+#ticket-list .status-badge { flex-shrink: 0; border: 1px solid #ff7900; background: #24180d; color: #ff7900; padding: 7px 13px; border-radius: 9px; font-size: 12px; font-weight: 800; }
+#ticket-list .status-badge.live, #ticket-list .status-badge.won { color: #30ec60; background: #112517; border-color: #245e34; }
+#ticket-list .status-badge.lost { color: #ff4b4b; background: #2b1010; border-color: #752727; }
+#ticket-list .match-row { display: grid; grid-template-columns: minmax(0,2fr) minmax(0,1fr) 105px; gap: 15px; align-items: center; border-bottom: 1px solid #292929; padding: 16px 0; font-size: 13px; }
+#ticket-list .match-row:last-child { border-bottom: 0; }
+#ticket-list .teams { min-width: 0; overflow-wrap: anywhere; }
+#ticket-list .teams strong, #ticket-list .teams small, #ticket-list .match-result strong, #ticket-list .match-result small { display: block; }
+#ticket-list .teams strong { color: #fff; font-size: 14px; line-height: 1.5; }
+#ticket-list .teams strong span { color: #888; font-weight: 400; margin: 0 6px; }
+#ticket-list .teams small { color: #999; margin-top: 5px; }
+#ticket-list .pick { color: #ff7900; font-weight: 600; overflow-wrap: anywhere; }
+#ticket-list .match-result { text-align: right; }
+#ticket-list .match-result strong { color: #ff7900; font-size: 16px; }
+#ticket-list .match-result small { color: #29e85c; margin-top: 5px; font-weight: 700; }
+@media (max-width: 700px) {
+  #ticket-list .ticket-card { padding: 16px; }
+  #ticket-list .ticket-header { flex-direction: column; align-items: flex-start; gap: 12px; }
+  #ticket-list .ticket-meta { gap: 10px; }
+  #ticket-list .match-row { grid-template-columns: minmax(0,1fr) auto; gap: 8px; }
+  #ticket-list .pick { grid-column: 1; grid-row: 2; }
+  #ticket-list .match-result { grid-column: 2; grid-row: 1 / 3; }
+}
+/* ACCABET ORANGE ICONS 27H8 - use .ab-icon for all future UI icons */
+.ab-icon { display:inline-block; width:1.1em; height:1.1em; flex:none; color:#ff7900; vertical-align:-.18em; }
+.ab-age { display:inline-flex; align-items:center; gap:6px; }
+.ab-age .ab-icon { width:1.7em; height:1.7em; }
+#ticket-list .ticket-meta .ab-icon, #ticket-list .status-badge .ab-icon { margin-right:5px; }
+#ticket-list .empty-icon .ab-icon { width:42px; height:42px; }
+#ticket-list .match-result small .ab-icon { color:#ff7900; }
+
+/* ACCABET CLEAN ICONS 27H9: transparent icon backgrounds */
+.discover-icon, .today-accas-icon { background:transparent !important; border:0 !important; border-radius:0 !important; box-shadow:none !important; }
+.ab-icon, .social-icon, .social-logo, .footer-social-logo, .ab-age { background:transparent !important; box-shadow:none !important; }
+.ab-icon { color:#ff7900 !important; }
+.social-logo, .footer-social-logo { filter:none !important; }
+.ab-age { color:inherit; }
+.footer-age { display:inline-flex; align-items:center; gap:5px; }
+.footer-age .ab-icon { width:1.3em; height:1.3em; }
+
+
+/* ACCABET APPROVED FIVE-TICKET DESIGN — 27H.12 */
+.ab-new-header{background:#090909;border-bottom:1px solid #363636}.ab-header-inner{max-width:1640px;min-height:82px;gap:28px}.ab-wordmark{font-size:clamp(25px,2.5vw,42px);font-weight:900;letter-spacing:-1.8px;text-decoration:none;color:#fff;white-space:nowrap}.ab-wordmark span,.ab-ticket-brand span,.ab-ticket-head h2 span,.ab-tickets-heading h1 span{color:#ff7900}.ab-main-nav{display:flex;align-items:center;gap:clamp(14px,2.3vw,45px)}.ab-main-nav .nav-link{font-size:16px;padding:26px 0 20px;white-space:nowrap}.ab-main-nav .nav-link.active{color:#ff7900;border-bottom:2px solid #ff7900}.ab-header-actions{display:flex;align-items:center;gap:19px;margin-left:auto}.ab-header-actions>a:not(.ab-download),.ab-header-actions>span{display:inline-flex;width:28px;height:28px}.ab-header-actions img{width:100%;height:100%;object-fit:contain}.ab-download{display:inline-flex;align-items:center;gap:8px;padding:13px 22px;background:#ff920d;color:#080808!important;border-radius:10px;font-weight:800;white-space:nowrap;text-decoration:none}.ab-download svg{width:20px;height:20px}.ab-tickets-page{max-width:1640px;margin:0 auto;padding:42px 18px 85px}.ab-tickets-heading{display:flex;justify-content:space-between;align-items:center;gap:22px;margin-bottom:32px}.ab-tickets-heading h1{font-size:clamp(36px,4vw,62px);line-height:1.05;margin:0 0 14px;letter-spacing:-1.7px}.ab-tickets-heading p{font-size:clamp(15px,1.4vw,21px);color:#c6c6c6;margin:0}.ab-date-label{display:flex;align-items:center;gap:12px;border:1px solid #666;border-radius:12px;padding:15px 18px;min-width:240px}.ab-date-label svg{width:22px;height:22px;flex-shrink:0}.ab-date-label select{color:#fff;background:#111;border:0;font:inherit;width:100%;cursor:pointer}.ab-five-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;align-items:stretch}.ab-ticket{display:flex;flex-direction:column;min-width:0;min-height:530px;background:#151515;border:1px solid #555;border-radius:15px;overflow:hidden;color:#fff}.ab-ticket--classic,.ab-ticket--modern,.ab-ticket--premium{border-color:#ff7900}.ab-ticket-head{position:relative;padding:22px 19px 18px;border-bottom:1px solid #393939;overflow:hidden}.ab-ticket-brand{font-size:clamp(19px,1.8vw,29px);font-weight:900;letter-spacing:-1px}.ab-folds{position:absolute;right:14px;top:20px;border:1px solid #777;border-radius:14px;padding:6px 10px;font-size:13px;white-space:nowrap}.ab-ticket--classic .ab-folds,.ab-ticket--modern .ab-folds,.ab-ticket--premium .ab-folds{border-color:#ff7900}.ab-ticket-head h2{font-size:clamp(19px,1.9vw,29px);letter-spacing:-.6px;margin:22px 0 14px}.ab-ticket-date{font-size:14px;color:#eee;margin:0}.ab-ticket--classic .ab-ticket-head{background:linear-gradient(120deg,#151515 55%,#31200e)}.ab-ticket--modern{background:linear-gradient(145deg,#111,#181818 65%,#281604)}.ab-ticket--modern .ab-ticket-head{background:repeating-linear-gradient(132deg,transparent 0 55px,#4a2a0b 57px 59px,transparent 62px 94px)}.ab-ticket--minimal .ab-ticket-head{background:linear-gradient(125deg,#171717 70%,#a94b00 71%,#161616 77%,#613100 81%,#151515 90%)}.ab-ticket--premium{background:linear-gradient(150deg,#201407,#151515 38%,#281506 90%,#5a2c04)}.ab-ticket--premium .ab-ticket-head{background:radial-gradient(circle at 94% 65%,#7c400d,#201407 40%,#151515 85%)}.ab-ticket-matches{flex:1;padding:4px 15px 12px}.ab-match{display:flex;align-items:center;gap:8px;padding:16px 0;border-bottom:1px solid #404040;min-width:0}.ab-match:last-child{border-bottom:0}.ab-team-logos{display:flex;align-items:center;gap:3px;flex:0 0 auto}.ab-team-logos img{width:25px;height:25px;object-fit:contain}.ab-match-copy{flex:1;min-width:0;display:flex;flex-direction:column;gap:5px}.ab-match-copy strong{font-size:clamp(11px,.85vw,14px);line-height:1.35;overflow-wrap:anywhere}.ab-match-copy span{font-size:clamp(11px,.85vw,14px);color:#ddd;overflow-wrap:anywhere}.ab-match>b{font-size:clamp(13px,1.1vw,17px);color:#ff7900;flex-shrink:0}.ab-total{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 15px 15px;padding:13px 12px;border:1px solid #4b4b4b;border-radius:10px;background:#1c1c1c;font-size:14px}.ab-total strong{font-size:23px;color:#ff7900}.ab-feed-message{grid-column:1/-1;padding:36px;text-align:center;border:1px solid #555;border-radius:14px;color:#ddd}.ab-legal{margin-top:24px;color:#aaa;font-size:13px}.ab-download-info{margin-top:65px;padding:30px;border:1px solid #ff7900;border-radius:15px}.ab-download-info h2{margin:0 0 12px}.ab-download-info div{display:flex;gap:18px;margin-top:18px}.ab-download-info a{color:#ff7900}
+@media(max-width:1350px){.ab-five-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.ab-ticket{min-height:480px}.ab-header-actions{gap:10px}.ab-main-nav{gap:16px}}
+@media(max-width:900px){.ab-five-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.ab-main-nav{display:none}.ab-header-inner .mobile-menu{display:block}.ab-header-actions>a:not(.ab-download),.ab-header-actions>span{display:none}.ab-download{padding:10px 12px;font-size:13px}.ab-tickets-heading{align-items:flex-start;flex-direction:column}.ab-date-label{width:100%}}
+@media(max-width:560px){.ab-five-grid{grid-template-columns:1fr}.ab-ticket{min-height:auto}.ab-tickets-page{padding:28px 14px}.ab-header-inner{gap:12px}.ab-wordmark{font-size:27px}.ab-header-actions{margin-left:auto}.ab-ticket-head h2{font-size:26px}.ab-match-copy strong,.ab-match-copy span{font-size:14px}.ab-ticket{max-width:440px;width:100%;margin:0 auto}}

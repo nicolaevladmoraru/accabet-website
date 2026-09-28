@@ -1,0 +1,51 @@
+---
+const { active = '' } = Astro.props;
+const links = [
+  { href:'/', label:'Home', key:'home' },
+  { href:'/todays-accas/', label:"Today's Accas", key:'todays-accas' },
+  { href:'/daily-accas/', label:'Results', key:'daily-accas' },
+  { href:'/statistics/', label:'Stats', key:'statistics' },
+  { href:'/how-it-works/', label:'About', key:'how-it-works' }
+];
+---
+<header class="site-header ab-new-header">
+ <div class="header-inner ab-header-inner">
+  <a class="site-logo ab-wordmark ab-original-logo" href="/" aria-label="AccaBet Home"><img src="/images/accabet-logo.png" alt="AccaBet" width="2048" height="684" /></a>
+  <nav class="desktop-nav ab-main-nav" aria-label="Main navigation">
+   {links.map(link => <a href={link.href} class:list={['nav-link',{active:active===link.key}]} aria-current={active===link.key?'page':undefined}>{link.label}</a>)}
+  </nav>
+  <div class="ab-header-actions">
+   <a class="ab-download" href="/#social-platforms" aria-label="Download app information"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 12 7-12 7z" fill="currentColor"/></svg>Download App</a>
+   <a href="https://www.tiktok.com/@accabet4?lang=en-GB" target="_blank" rel="noopener noreferrer" aria-label="TikTok"><img src="/images/social/tiktok.svg" alt=""/></a>
+   <a href="https://www.instagram.com/accabet.official/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><img src="/images/social/instagram.svg" alt=""/></a>
+   <span title="YouTube coming soon" aria-label="YouTube coming soon"><img src="/images/social/youtube.svg" alt=""/></span>
+  </div>
+  <details class="mobile-menu"><summary aria-label="Open navigation menu"><span></span><span></span><span></span></summary><nav aria-label="Mobile navigation">{links.map(link=><a href={link.href} class:list={['nav-link',{active:active===link.key}]}>{link.label}</a>)}<a href="/#social-platforms">Download App · Coming Soon</a></nav></details>
+ </div>
+</header>
+
+<style>
+  .ab-new-header .ab-original-logo {
+    display: inline-flex;
+    align-items: center;
+    flex: 0 0 auto;
+    width: clamp(135px, 14vw, 205px);
+    max-width: 100%;
+    height: auto;
+    line-height: 1;
+    text-decoration: none;
+  }
+
+  .ab-new-header .ab-original-logo img {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
+
+  @media (max-width: 600px) {
+    .ab-new-header .ab-original-logo {
+      width: 135px;
+    }
+  }
+</style>

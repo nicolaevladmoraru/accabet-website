@@ -1,0 +1,29 @@
+﻿---
+import BaseLayout from '../layouts/BaseLayout.astro';
+const isHome = true;
+---
+<BaseLayout title="AccaBet | Today's Accas" description="AccaBet accumulator tickets published after Telegram delivery. 18+ only." active={isHome ? 'home' : 'todays-accas'}>
+<main class="ab-tickets-page">
+ <div class="ab-tickets-heading"><div><h1>Today's <span>Accas</span></h1><p>Explore our latest published accumulator tickets. No stakes or projected returns.</p></div><label class="ab-date-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 2v6M17 2v6M3 11h18"/></svg><select id="ab-date" aria-label="Ticket date"><option value="">Today</option></select></label></div>
+ <div id="ab-public-tickets" class="ab-five-grid" aria-live="polite"><p class="ab-feed-message">Loading published tickets…</p></div>
+ <p class="ab-legal">AccaBet is a ticket generator, not a bookmaker. We do not accept bets or guarantee outcomes. 18+ only.</p>
+ {isHome && <section id="social-platforms" class="ab-download-info"><h2>Download App</h2><p>Our Android app is coming soon.</p><div><a href="https://www.tiktok.com/@accabet4?lang=en-GB" target="_blank" rel="noopener noreferrer">TikTok ↗</a><a href="https://www.instagram.com/accabet.official/" target="_blank" rel="noopener noreferrer">Instagram ↗</a></div></section>}
+</main>
+<script>
+ import { fetchPublicTickets, calculateTicketOdds, currentUkDate } from '../lib/publicTickets';
+ import type { PublicTicket, PublicSelection } from '../lib/publicTickets';
+ const escapeHtml=(v:unknown)=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'} as Record<string,string>)[c]??c);
+ const safeLogo=(v:unknown)=>{if(typeof v!=='string')return '';try{const u=new URL(v);return u.protocol==='https:'?u.href:''}catch{return ''}};
+ const ukDate=(value:string)=>{const d=new Date(value+'T12:00:00Z');return Number.isNaN(d.getTime())?value:new Intl.DateTimeFormat('en-GB',{day:'numeric',month:'short',year:'numeric',timeZone:'Europe/London'}).format(d)};
+ // Stable pseudo-random style: the same published ticket always keeps its assigned design.
+ const styleFor=(ticket:PublicTicket)=>{const key=`${ticket.date}|${ticket.slot_hour}|${ticket.published_at}|${ticket.selections.map(s=>s.fixture_id).join(',')}`;let hash=2166136261;for(let i=0;i<key.length;i++){hash^=key.charCodeAt(i);hash=Math.imul(hash,16777619)}return (hash>>>0)%5};
+ const variants=['classic','compact','modern','minimal','premium'];
+ const matchHtml=(s:PublicSelection)=>{const home=safeLogo(s.home_team_logo),away=safeLogo(s.away_team_logo);const logos=`<div class="ab-team-logos">${home?`<img src="${escapeHtml(home)}" alt="" loading="lazy" referrerpolicy="no-referrer"/>`:''}${away?`<img src="${escapeHtml(away)}" alt="" loading="lazy" referrerpolicy="no-referrer"/>`:''}</div>`;return `<div class="ab-match">${logos}<div class="ab-match-copy"><strong>${escapeHtml(s.home_team)} vs ${escapeHtml(s.away_team)}</strong><span>${escapeHtml(s.market)}</span></div><b>${typeof s.odds==='number'&&Number.isFinite(s.odds)?s.odds.toFixed(2):'—'}</b></div>`};
+ const ticketHtml=(t:PublicTicket)=>{const style=variants[styleFor(t)],odds=calculateTicketOdds(t.selections);return `<article class="ab-ticket ab-ticket--${style}"><div class="ab-ticket-head"><div class="ab-ticket-brand">Acca<span>Bet</span></div><span class="ab-folds">${t.selections.length} Folds</span><h2>Today's <span>Acca</span></h2><p class="ab-ticket-date">▢ &nbsp;${escapeHtml(ukDate(t.date))}</p></div><div class="ab-ticket-matches">${t.selections.map(matchHtml).join('')}</div><div class="ab-total"><span>Total Odds</span><strong>${odds===null?'—':odds.toFixed(2)}</strong></div></article>`};
+ const target=document.getElementById('ab-public-tickets'),select=document.getElementById('ab-date') as HTMLSelectElement|null;
+ async function init(){if(!target||!select)return;try{const remote=await fetchPublicTickets(100).catch(()=>[]);
+const all=[...remote].sort((a,b)=>b.published_at.localeCompare(a.published_at));const today=currentUkDate();const dates=[...new Set([today,...all.map(t=>t.date)])].sort().reverse();select.innerHTML=dates.map(d=>`<option value="${escapeHtml(d)}">${d===today?'Today · ':''}${escapeHtml(ukDate(d))}</option>`).join('');select.value=all.some(t=>t.date===today)?today:(all[0]?.date??today);const draw=()=>{const date=select.value;const tickets=all.filter(t=>t.date===date);target.innerHTML=tickets.length?tickets.map(ticketHtml).join(''):`<p class="ab-feed-message">No tickets published for ${escapeHtml(ukDate(date))} yet.</p>`};select.addEventListener('change',draw);draw()}catch(err){console.warn('Public ticket feed unavailable',err);target.textContent='Tickets temporarily unavailable. Please try again later.'}}
+ void init();
+</script>
+</BaseLayout>
+

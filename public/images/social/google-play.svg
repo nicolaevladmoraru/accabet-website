@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 64 64"
+     fill="none"
+     stroke="#ff7900"
+     stroke-width="3.2"
+     stroke-linecap="round"
+     stroke-linejoin="round"
+     role="img"
+     aria-label="Google Play">
+  <path d="M12 7 Q12 4 16 7 L53 28 Q58 32 53 36 L16 57 Q12 60 12 55 Z"/>
+  <path d="M13 8 L40 32 L13 56"/>
+  <path d="M27 20 L53 36"/>
+  <path d="M27 44 L53 28"/>
+</svg>

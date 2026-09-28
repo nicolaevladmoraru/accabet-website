@@ -1,0 +1,353 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const groups = [
+  {
+    title: 'FIRST HALF',
+    picks: [
+      {
+        title: 'Half Time OVER 0.5',
+        shortRule: 'At least 1 goal must be scored before half-time.',
+        explanation: 'This pick only looks at the first half. It does not matter which team scores. As soon as the first half finishes with one or more goals, the pick wins.',
+        winExample: 'Half-time score: 1-0, 0-1, 1-1, 2-0',
+        loseExample: 'Half-time score: 0-0'
+      }
+    ]
+  },
+  {
+    title: 'FULL TIME GOALS',
+    picks: [
+      {
+        title: 'Full Time OVER 1.5',
+        shortRule: 'The match must have at least 2 total goals.',
+        explanation: 'Goals from both teams are added together. It does not matter which team scores them.',
+        winExample: '2-0, 1-1, 1-2, 3-0',
+        loseExample: '0-0, 1-0, 0-1'
+      },
+      {
+        title: 'Full Time OVER 2.5',
+        shortRule: 'The match must have at least 3 total goals.',
+        explanation: 'Add the final goals scored by both teams. Three or more total goals means the pick wins.',
+        winExample: '2-1, 3-0, 2-2, 1-3',
+        loseExample: '0-0, 1-0, 1-1, 2-0'
+      },
+      {
+        title: 'Full Time OVER 3.5',
+        shortRule: 'The match must have at least 4 total goals.',
+        explanation: 'The final goals from both teams are combined. Four or more goals are required.',
+        winExample: '3-1, 2-2, 4-0, 2-3',
+        loseExample: '1-1, 2-0, 2-1, 0-3'
+      },
+      {
+        title: 'FT OVER 2.5 & BTTS YES',
+        shortRule: 'The match must have at least 3 total goals AND both teams must score.',
+        explanation: 'This combined pick requires both conditions at full time: Over 2.5 total goals and BTTS YES.',
+        winExample: '2-1, 1-2, 2-2, 3-1',
+        loseExample: '2-0, 3-0, 1-1, 1-0. One of the two conditions was not met.'
+      }
+    ]
+  },
+  {
+    title: 'BOTH TEAMS TO SCORE',
+    picks: [
+      {
+        title: 'BTTS YES',
+        shortRule: 'Both teams must score at least 1 goal.',
+        explanation: 'The number of total goals is not important. The only requirement is that the home team scores and the away team also scores.',
+        winExample: '1-1, 2-1, 1-3, 4-2',
+        loseExample: '0-0, 1-0, 0-2, 3-0'
+      }
+    ]
+  }
+];
+---
+
+<BaseLayout
+  title="Picks Explained | AccaBet"
+  description="Understand every AccaBet accumulator pick, including goal markets, both teams to score, and winning and losing examples."
+  active="picks-explained"
+>
+  <main class="picks-page">
+    <header class="picks-heading">
+      <div class="picks-eyebrow">ACCA BETTER.</div>
+      <h1>Picks <span>Explained.</span></h1>
+      <p>A simple guide to every available AccaBet pick.</p>
+    </header>
+
+    <section class="picks-intro" aria-labelledby="intro-heading">
+      <div class="picks-intro-icon" aria-hidden="true">i</div>
+      <div>
+        <h2 id="intro-heading">Understand every pick</h2>
+        <p>
+          Below are all picks currently available in AccaBet.
+          Each explanation shows exactly what must happen
+          for the pick to win or lose.
+        </p>
+      </div>
+    </section>
+
+    {groups.map(group => (
+      <section class="picks-group" aria-label={group.title}>
+        <h2 class="picks-group-title">{group.title}</h2>
+
+        <div class="picks-grid">
+          {group.picks.map(pick => (
+            <article class="pick-card">
+              <h3>{pick.title}</h3>
+              <p class="pick-rule">{pick.shortRule}</p>
+              <p class="pick-explanation">{pick.explanation}</p>
+
+              <div class="pick-examples">
+                <div class="pick-example win">
+                  <span class="pick-result-label">WIN</span>
+                  <p>{pick.winExample}</p>
+                </div>
+
+                <div class="pick-example lose">
+                  <span class="pick-result-label">LOSE</span>
+                  <p>{pick.loseExample}</p>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+    ))}
+
+    <aside class="picks-important">
+      <span class="important-icon" aria-hidden="true">i</span>
+      <p>
+        Pick results are determined from the relevant official match
+        information used by AccaBet. Goal markets use the recorded
+        match scores.
+      </p>
+    </aside>
+
+    <p class="picks-disclaimer">
+      AccaBet is not a bookmaker and does not accept bets.
+      No outcome is guaranteed. 18+ only.
+    </p>
+  </main>
+</BaseLayout>
+
+<style>
+  .picks-page {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 72px 24px 100px;
+  }
+
+  .picks-heading {
+    margin-bottom: 38px;
+  }
+
+  .picks-eyebrow {
+    color: #ff7900;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    margin-bottom: 14px;
+  }
+
+  .picks-heading h1 {
+    color: #ffffff;
+    font-size: clamp(42px, 6vw, 70px);
+    line-height: 1.05;
+    margin: 0 0 20px;
+  }
+
+  .picks-heading h1 span {
+    color: #ff7900;
+  }
+
+  .picks-heading > p {
+    color: #b9b9b9;
+    font-size: 19px;
+    line-height: 1.6;
+  }
+
+  .picks-intro {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    padding: 25px;
+    margin-bottom: 50px;
+    background: #151515;
+    border: 1px solid #b65c10;
+    border-radius: 14px;
+  }
+
+  .picks-intro-icon,
+  .important-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 36px;
+    height: 36px;
+    border-radius: 50%;
+    color: #080808;
+    background: #ff7900;
+    font-weight: 900;
+    font-size: 22px;
+  }
+
+  .picks-intro h2 {
+    font-size: 20px;
+    color: #ffffff;
+    margin: 0 0 10px;
+  }
+
+  .picks-intro p {
+    color: #b9b9b9;
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  .picks-group {
+    margin-bottom: 45px;
+  }
+
+  .picks-group-title {
+    color: #ff7900;
+    font-size: 15px;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    margin: 0 0 18px;
+    padding-bottom: 13px;
+    border-bottom: 1px solid #333333;
+  }
+
+  .picks-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .pick-card {
+    background: #151515;
+    border: 1px solid #333333;
+    border-radius: 14px;
+    padding: 26px;
+  }
+
+  .pick-card h3 {
+    color: #ffffff;
+    font-size: 22px;
+    margin: 0 0 12px;
+  }
+
+  .pick-rule {
+    color: #ff7900;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.6;
+    margin: 0 0 15px;
+  }
+
+  .pick-explanation {
+    color: #c7c7c7;
+    font-size: 15px;
+    line-height: 1.7;
+    margin: 0 0 25px;
+  }
+
+  .pick-examples {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .pick-example {
+    border-radius: 10px;
+    padding: 14px;
+  }
+
+  .pick-example.win {
+    background: rgba(39, 174, 96, .10);
+    border: 1px solid rgba(39, 174, 96, .4);
+  }
+
+  .pick-example.lose {
+    background: rgba(220, 53, 69, .10);
+    border: 1px solid rgba(220, 53, 69, .4);
+  }
+
+  .pick-result-label {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+  }
+
+  .win .pick-result-label {
+    color: #48d184;
+  }
+
+  .lose .pick-result-label {
+    color: #ff6978;
+  }
+
+  .pick-example p {
+    color: #ffffff;
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .picks-important {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 23px;
+    border: 1px solid rgba(255, 121, 0, .4);
+    border-radius: 14px;
+    background: rgba(255, 121, 0, .07);
+  }
+
+  .important-icon {
+    flex-basis: 30px;
+    height: 30px;
+    font-size: 18px;
+  }
+
+  .picks-important p {
+    margin: 0;
+    color: #d0d0d0;
+    line-height: 1.7;
+    font-size: 14px;
+  }
+
+  .picks-disclaimer {
+    color: #888888;
+    text-align: center;
+    font-size: 12px;
+    line-height: 1.6;
+    margin-top: 30px;
+  }
+
+  @media (max-width: 980px) {
+    .picks-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .picks-page {
+      padding: 45px 16px 70px;
+    }
+
+    .picks-intro,
+    .pick-card {
+      padding: 19px;
+    }
+
+    .pick-examples {
+      grid-template-columns: 1fr;
+    }
+
+    .picks-heading > p {
+      font-size: 16px;
+    }
+  }
+</style>

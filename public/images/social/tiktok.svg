@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 64 64"
+     fill="none"
+     stroke="#ff7900"
+     stroke-width="3.5"
+     stroke-linecap="round"
+     stroke-linejoin="round"
+     role="img"
+     aria-label="TikTok">
+  <path d="M35 6 H44
+           C44 16 50 21 59 21
+           V30
+           C52 30 47 28 44 25
+           V43
+           C44 55 35 61 24 61
+           C13 61 5 53 5 43
+           C5 32 13 24 24 24
+           H27 V34 H24
+           C19 34 15 38 15 43
+           C15 48 19 51 24 51
+           C30 51 35 47 35 42 Z"/>
+</svg>
