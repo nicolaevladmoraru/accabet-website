@@ -211,7 +211,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   import {
     fetchPublicTickets,
     calculateTicketOdds,
-    currentUkDate
+    currentUkDate,
+    publicTicketId
   } from '../lib/publicTickets';
 
   type Selection = {
@@ -228,6 +229,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
   type Ticket = {
     id: string;
+    product?: number | null;
     date: string;
     publishedAt: string;
     status: string;
@@ -246,7 +248,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       const mapped: Ticket[] = published
         .filter(ticket => ticket.date <= today)
         .map(ticket => ({
-          id: `${ticket.date}-${ticket.slot_hour}`,
+          id: publicTicketId(ticket),
+          product: ticket.product,
           date: ticket.date,
           publishedAt: ticket.published_at,
           status: 'pending',
@@ -524,7 +527,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
     visible = [...visible].sort((a, b) => {
       if (filters.sort === 'oldest')
-        return a.publishedAt.localeCompare(b.publishedAt);
+        return Date.parse(a.publishedAt) - Date.parse(b.publishedAt);
 
       if (filters.sort === 'highest')
         return (b.totalOdds ?? 0) - (a.totalOdds ?? 0);
@@ -532,7 +535,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       if (filters.sort === 'lowest')
         return (a.totalOdds ?? 0) - (b.totalOdds ?? 0);
 
-      return b.publishedAt.localeCompare(a.publishedAt);
+      return Date.parse(b.publishedAt) - Date.parse(a.publishedAt);
     });
 
     $('#results-count').textContent =
@@ -591,9 +594,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       }).join('');
 
       return `
-        <article class="ticket-card ${escapeHtml(status)}">
+        <article data-ticket-id="${escapeHtml(ticket.id)}" class="ticket-card ${escapeHtml(status)}">
           <div class="ticket-header">
             <div class="ticket-meta">
+              ${ticket.product!=null?`<span>ACCA ${ticket.product}</span>`:''}
               <span><svg class="ab-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h18v3a2 2 0 0 0 0 4v3H3v-3a2 2 0 0 0 0-4V7Z"/><path d="M12 7v10" stroke-dasharray="2 2"/></svg> ${ticket.selections.length} Selections</span>
               <span><svg class="ab-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V11h4v9M10 20V5h4v15M16 20v-7h4v7"/></svg> ${ticket.totalOdds?.toFixed(2) ?? '—'}</span>
               <span><svg class="ab-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 10h18"/></svg> ${escapeHtml(ticket.date)}</span>
