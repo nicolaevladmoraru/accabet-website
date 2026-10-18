@@ -96,3 +96,91 @@ test('every feed page uses the shared identity and no legacy-only identity', () 
     assert.doesNotMatch(source, /id: `\$\{ticket.date\}-\$\{ticket.slot_hour\}`/);
   }
 });
+
+
+// Website results regression tests share the original offline npm test command.
+import { publicResult, resultBadge, finalScoreText, startPublicTicketPolling } from '../src/lib/publicTickets.ts';
+
+test('result presentation accepts only backend states; never derives outcomes', () => {
+  for (const result of ['WIN','LOST','VOID','PENDING']) {
+    assert.equal(publicResult(result), result);
+    assert.match(resultBadge(result), new RegExp(`ab-result--${result.toLowerCase()}`));
+    assert.ok(resultBadge(result).endsWith(`${result}</span>`));
+  }
+  for (const invalid of [null, undefined, 'OPEN', 'PUSH', 'won', '<img src=x>']) {
+    assert.equal(publicResult(invalid), 'PENDING');
+    assert.ok(!resultBadge(invalid).includes('<img'));
+  }
+});
+
+test('final score requires explicit backend verification and final regulation status', () => {
+  const verified = {...selection(1), final_score_verified:true, fixture_status:'FT', final_score:{home:2,away:1}};
+  assert.equal(finalScoreText(verified), '2 – 1');
+  for (const changes of [{final_score_verified:false}, {fixture_status:'2H'}, {fixture_status:'AET'},
+    {fixture_status:'PEN'}, {final_score:null}, {final_score:{home:-1,away:0}},
+    {final_score:{home:'2',away:1}}, {final_score:{home:2.5,away:1}}]) {
+    assert.equal(finalScoreText({...verified,...changes}), '');
+  }
+});
+
+function pollingHarness(load) {
+  let handler, serial=0;
+  const scheduled=new Map(); const received=[],errors=[];
+  const visibility={hidden:false,addEventListener:(name,fn)=>{handler=fn;},removeEventListener:()=>{handler=undefined;}};
+  const timers={setTimeout:(fn,ms)=>{const id=++serial;scheduled.set(id,{fn,ms});return id;},clearTimeout:id=>scheduled.delete(id)};
+  const poller=startPublicTicketPolling({load,onData:data=>received.push(data),onError:e=>errors.push(e),visibility,timers});
+  return {poller,scheduled,received,errors,visibility,change:hidden=>{visibility.hidden=hidden;handler?.();}};
+}
+const flush=()=>new Promise(resolve=>setImmediate(resolve));
+const deferred=()=>{let resolve,reject;const promise=new Promise((yes,no)=>{resolve=yes;reject=no;});return {promise,resolve,reject};};
+
+test('polling is serial, uses 90 seconds, and stops cleanly', async () => {
+  const first=deferred(); let calls=0;
+  const h=pollingHarness(()=>{calls++;return first.promise;});
+  await h.poller.refresh(); await h.poller.refresh(); assert.equal(calls,1);
+  first.resolve([dynamic(2)]); await flush();
+  assert.equal(h.received.length,1);assert.equal(h.scheduled.size,1);
+  assert.equal([...h.scheduled.values()][0].ms,90000);
+  h.poller.stop(); assert.equal(h.scheduled.size,0);
+  await h.poller.refresh();assert.equal(calls,1);
+});
+
+test('hidden-page responses cannot replace newer data; resume queues one refresh', async () => {
+  const old=deferred(),fresh=deferred();let calls=0;
+  const h=pollingHarness(()=>++calls===1?old.promise:fresh.promise);
+  h.change(true); await h.poller.refresh();assert.equal(calls,1);
+  h.change(false); assert.equal(calls,1);
+  old.resolve([dynamic(2)]);await flush();assert.equal(calls,2);assert.equal(h.received.length,0);
+  fresh.resolve([dynamic(3)]);await flush();assert.equal(h.received.length,1);
+  assert.equal(h.received[0][0].product,3);h.poller.stop();
+});
+
+test('errors retain the last data and schedule a retry, without fabricated results', async () => {
+  let calls=0; const h=pollingHarness(async()=>{if(++calls===1)return [dynamic(2)];throw new Error('offline');});
+  await flush();await h.poller.refresh();
+  assert.equal(h.received.length,1);assert.equal(h.errors.length,1);assert.equal(h.scheduled.size,1);
+  h.change(true);assert.equal(h.scheduled.size,0);h.poller.stop();
+});
+
+test('stopped and hidden pending requests cannot mutate the page', async () => {
+  for (const action of ['stop','hide']) {
+    const request=deferred();const h=pollingHarness(()=>request.promise);
+    if(action==='stop')h.poller.stop();else h.change(true);
+    request.resolve([dynamic(5)]);await flush();
+    assert.equal(h.received.length,0);assert.equal(h.scheduled.size,0);h.poller.stop();
+  }
+});
+
+test('all pages use the same result/score helpers and visibility-safe poller', () => {
+  for (const page of ['index','todays-accas','daily-accas']) {
+    const source=readFileSync(new URL(`../src/pages/${page}.astro`,import.meta.url),'utf8');
+    for (const helper of ['resultBadge','finalScoreText','startPublicTicketPolling']) assert.ok(source.includes(helper));
+    assert.doesNotMatch(source,/status: 'pending'/);
+    assert.match(source,/pagehide/);
+  }
+});
+
+test('badge colors override the existing match-copy span colors', () => {
+  const css=readFileSync(new URL('../src/components/PublicResultsStyles.astro',import.meta.url),'utf8');
+  for(const state of ['win','lost','void'])assert.ok(css.includes(`.ab-result.ab-result--${state}`));
+});

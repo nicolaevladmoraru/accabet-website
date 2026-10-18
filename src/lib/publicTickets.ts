@@ -2,6 +2,12 @@
 // Read-only feed of tickets published after Telegram delivery.
 
 export interface PublicSelection {
+  result?: PublicResult;
+  result_reason?: string;
+  settled_at?: string | null;
+  fixture_status?: string | null;
+  final_score_verified?: boolean;
+  final_score?: { home: number; away: number } | null;
   fixture_id: number;
   kickoff?: string | null;
   league?: string | null;
@@ -14,7 +20,10 @@ export interface PublicSelection {
   chance?: number | null;
 }
 
+export type PublicResult = 'WIN' | 'LOST' | 'VOID' | 'PENDING';
+
 export interface PublicTicket {
+  result?: PublicResult;
   date: string;
   slot_hour: number | null;
   product?: number | null;
@@ -153,4 +162,69 @@ export async function fetchPublicTickets(
   } finally {
     clearTimeout(timeout);
   }
+}
+
+
+// Presentation only: outcomes are supplied by the backend, never inferred from goals.
+export function publicResult(value: unknown): PublicResult {
+  return value === 'WIN' || value === 'LOST' || value === 'VOID' ? value : 'PENDING';
+}
+
+export function resultBadge(value: unknown): string {
+  const result = publicResult(value);
+  return `<span class="ab-result ab-result--${result.toLowerCase()}">${result}</span>`;
+}
+
+export function finalScoreText(selection: PublicSelection): string {
+  const score = selection.final_score;
+  return selection.final_score_verified === true && selection.fixture_status === 'FT' && score &&
+    Number.isSafeInteger(score.home) && score.home >= 0 &&
+    Number.isSafeInteger(score.away) && score.away >= 0
+      ? `${score.home} – ${score.away}` : '';
+}
+
+type Visibility = Pick<Document, 'hidden' | 'addEventListener' | 'removeEventListener'>;
+export function startPublicTicketPolling(options: {
+  load: () => Promise<PublicTicket[]>;
+  onData: (tickets: PublicTicket[]) => void;
+  onError: (error: unknown) => void;
+  visibility?: Visibility;
+  interval?: number;
+  timers?: Pick<typeof globalThis, 'setTimeout' | 'clearTimeout'>;
+}) {
+  const visibility = options.visibility ?? document;
+  const timers = options.timers ?? globalThis;
+  let stopped = false, busy = false, epoch = 0, refreshAfter = false;
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  const clear = () => { if (timer !== undefined) timers.clearTimeout(timer); timer = undefined; };
+  async function refresh(): Promise<void> {
+    if (stopped || visibility.hidden || busy) return;
+    clear();
+    busy = true;
+    const generation = epoch;
+    try {
+      const tickets = await options.load();
+      if (!stopped && !visibility.hidden && generation === epoch) options.onData(tickets);
+    } catch (error) {
+      if (!stopped && !visibility.hidden && generation === epoch) options.onError(error);
+    } finally {
+      busy = false;
+      if (!stopped && !visibility.hidden) {
+        if (refreshAfter) { refreshAfter = false; void refresh(); }
+        else timer = timers.setTimeout(() => { void refresh(); }, options.interval ?? 90000);
+      }
+    }
+  }
+  const changed = () => {
+    epoch++;
+    clear();
+    if (!visibility.hidden) {
+      if (busy) refreshAfter = true;
+      else void refresh();
+    }
+  };
+  visibility.addEventListener('visibilitychange', changed);
+  const stop = () => { stopped = true; epoch++; clear(); visibility.removeEventListener('visibilitychange', changed); };
+  void refresh();
+  return { refresh, stop };
 }

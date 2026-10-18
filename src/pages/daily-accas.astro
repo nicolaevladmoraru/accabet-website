@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import PublicResultsStyles from '../components/PublicResultsStyles.astro';
 ---
 
 <BaseLayout
@@ -7,7 +8,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   description="Explore AccaBet's generated accumulator tickets."
   active="daily-accas"
 >
-  <main class="daily-page">
+  <PublicResultsStyles />
+<main class="daily-page">
     <section class="hero">
       <div>
         <span class="eyebrow">ACCABET DAILY ACCAS</span>
@@ -136,9 +138,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
       <div class="submenu hidden" id="status-panel">
         <button class="sub-button selected" data-status="all">All</button>
-        <button class="sub-button" data-status="upcoming"><svg class="ab-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l4 2"/></svg> Upcoming</button>
-        <button class="sub-button" data-status="live"><svg class="ab-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"/><path d="M8 8a6 6 0 0 0 0 8m8-8a6 6 0 0 1 0 8M5 5a10 10 0 0 0 0 14m14-14a10 10 0 0 1 0 14"/></svg> Live</button>
-        <button class="sub-button" data-status="won"><svg class="ab-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m7 12 3 3 7-7"/></svg> Won</button>
+        <button class="sub-button" data-status="pending">Pending</button>
+        <button class="sub-button" data-status="win">Win</button>
         <button class="sub-button" data-status="lost"><svg class="ab-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m9 9 6 6m0-6-6 6"/></svg> Lost</button>
         <button class="sub-button" data-status="void">Void</button>
       </div>
@@ -212,7 +213,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     fetchPublicTickets,
     calculateTicketOdds,
     currentUkDate,
-    publicTicketId
+    publicTicketId, publicResult, resultBadge, finalScoreText, startPublicTicketPolling
   } from '../lib/publicTickets';
 
   type Selection = {
@@ -240,9 +241,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   const tickets: Ticket[] = [];
   let feedUnavailable = false;
 
-  async function loadPublishedTickets(): Promise<void> {
-    try {
-      const published = await fetchPublicTickets(500);
+  function acceptPublishedTickets(published: Awaited<ReturnType<typeof fetchPublicTickets>>): void {
       const today = currentUkDate();
 
       const mapped: Ticket[] = published
@@ -252,7 +251,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           product: ticket.product,
           date: ticket.date,
           publishedAt: ticket.published_at,
-          status: 'pending',
+          status: publicResult(ticket.result),
           totalOdds:
             calculateTicketOdds(ticket.selections) ?? undefined,
           selections: ticket.selections.map(selection => ({
@@ -260,17 +259,17 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             away: selection.away_team,
             league: selection.league ?? undefined,
             pick: selection.market,
-            odds: selection.odds ?? undefined
+            odds: selection.odds ?? undefined,
+            result: publicResult(selection.result),
+            score: finalScoreText(selection) || undefined,
+            status: selection.fixture_status ?? undefined
           }))
         }));
 
       tickets.splice(0, tickets.length, ...mapped);
       feedUnavailable = false;
-    } catch (error) {
-      console.warn('Public ticket feed unavailable:', error);
-      feedUnavailable = true;
-    }
-
+      const warning = document.getElementById('ab-results-warning');
+      if (warning) warning.textContent = '';
     render();
   }
 
@@ -502,7 +501,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
       if (
         filters.status !== 'all' &&
-        ticket.status.toLowerCase() !== filters.status
+        ticket.status.toLowerCase() !== (filters.status === 'won' ? 'win' : filters.status)
       ) return false;
 
       if (filters.matches !== 'all') {
@@ -564,12 +563,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       const status = ticket.status.toLowerCase();
 
       const rows = ticket.selections.map(selection => {
-        const live = selection.status?.toLowerCase() === 'live';
-
-        const statusText = live
-          ? `LIVE ${selection.minute ?? ''}′`
-          : selection.status?.toUpperCase() ?? '';
-
         return `
           <div class="match-row">
             <div class="teams">
@@ -587,7 +580,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
             <div class="match-result">
               <strong>${escapeHtml(selection.score ?? '—')}</strong>
-              <small>${live ? iconLive : ''}${escapeHtml(statusText)}</small>
+              ${resultBadge(selection.result)}
             </div>
           </div>
         `;
@@ -603,14 +596,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
               <span><svg class="ab-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 10h18"/></svg> ${escapeHtml(ticket.date)}</span>
             </div>
 
-            <span class="status-badge ${escapeHtml(status)}">
-              ${status === 'live' ? '<svg class="ab-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"/><path d="M8 8a6 6 0 0 0 0 8m8-8a6 6 0 0 1 0 8M5 5a10 10 0 0 0 0 14m14-14a10 10 0 0 1 0 14"/></svg> LIVE' :
-                status === 'won' ? '<svg class="ab-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m7 12 3 3 7-7"/></svg> WON' :
-                status === 'lost' ? '<svg class="ab-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m9 9 6 6m0-6-6 6"/></svg> LOST' :
-                status === 'upcoming' ? '<svg class="ab-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l4 2"/></svg> UPCOMING' :
-                status === 'pending' ? 'RESULTS PENDING' :
-                escapeHtml(status.toUpperCase())}
-            </span>
+            ${resultBadge(ticket.status)}
           </div>
 
           ${rows}
@@ -620,7 +606,22 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   }
 
   render();
-  void loadPublishedTickets();
+  const polling = startPublicTicketPolling({load: () => fetchPublicTickets(500),
+    onData: acceptPublishedTickets,
+    onError: () => {
+      feedUnavailable = true;
+      let warning = document.getElementById('ab-results-warning');
+      if (!warning) {
+        warning = document.createElement('p');
+        warning.id = 'ab-results-warning'; warning.className = 'ab-feed-warning';
+        warning.setAttribute('role', 'status');
+        $('#ticket-list').before(warning);
+      }
+      warning.textContent = tickets.length ? 'Results could not be refreshed. Showing the last available update.' : 'Tickets temporarily unavailable. Retrying automatically.';
+      render();
+    }});
+  window.addEventListener('pagehide', polling.stop, {once:true});
+  window.addEventListener('pageshow', event => {if(event.persisted)window.location.reload();});
 </script>
 
 <style>
@@ -916,7 +917,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   }
 
   .ticket-card.live,
-  .ticket-card.won {
+  .ticket-card.win {
     border-left-color: #25d94f;
   }
 
